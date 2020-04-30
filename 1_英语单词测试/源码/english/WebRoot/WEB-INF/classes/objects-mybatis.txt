@@ -1,0 +1,10 @@
+transaction=com.carre.transaction.impl.MyBatisTransactionManager
+mybatisDao=com.carre.dao
+wordProxy=com.carre.service.proxy.WordProxy
+wordService=com.carre.service.impl.WordServiceImpl
+testProxy=com.carre.service.proxy.TestProxy
+testService=com.carre.service.impl.TestServiceImpl
+
+
+##
+##

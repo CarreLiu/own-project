@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.WordDao">
+	<insert id="insertWord" parameterType="Word">
+		insert into
+			words
+				(english, chinese, createTime)
+		values
+			(#{english}, #{chinese}, #{createTime})
+	</insert>
+	
+	<select id="selectAllWords" resultType="Word">
+		select
+			*
+		from
+			words
+		where
+			date(createTime)&gt;=#{0} and date(createTime)&lt;=#{1}
+		order by
+			id
+	</select>
+	
+	<update id="updateErrorWords" parameterType="java.util.List">
+		<foreach collection="list" item="error" index="index" open="" close="" separator=";">
+			update
+				words
+			<set>
+				errorTimes = errorTimes + 1
+			</set>
+			<where>
+				id = #{error.id}
+			</where>
+		</foreach>
+	</update>
+	
+	<update id="updateCorrectWords" parameterType="java.util.List">
+		<foreach collection="list" item="correct" index="index" open="" close="" separator=";">
+			update
+				words
+			<set>
+				correctTimes = correctTimes + 1
+			</set>
+			<where>
+				id = #{correct.id}
+			</where>
+		</foreach>
+	</update>
+	
+	<select id="selectWordsByIds" parameterType="java.util.List" resultType="Word">
+		select
+			*
+		from
+			words
+		where
+			id in
+			<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+		order by
+			id
+	</select>
+	
+	<select id="selectByWordEnglish" resultType="Word">
+		select
+			*
+		from
+			words
+		where
+			english = #{english}
+	</select>
+</mapper>

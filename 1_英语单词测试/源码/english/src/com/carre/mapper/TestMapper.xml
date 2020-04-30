@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.TestDao">
+	<insert id="insertTest" parameterType="Test">
+		insert into
+			tests
+				(totalWords, correctRate, allWords, errorWords, correctWords, testType, createTime)
+		values
+			(#{totalWords}, #{correctRate}, #{allWords}, #{errorWords}, #{correctWords}, #{testType}, #{createTime})
+	</insert>
+	
+	<select id="selectAllTests" parameterType="java.lang.Integer" resultType="Test">
+		select
+			*
+		from
+			tests
+		<where>
+			<if test="_parameter != -1">testType=#{testType}</if>
+		</where>
+		order by
+			createTime desc
+	</select>
+	
+	<select id="selectTestsByDate" parameterType="com.carre.vo.TestVO2" resultType="Test">
+		select
+			*
+		from
+			tests
+		where
+			<if test="testType != -1">testType=#{testType} and</if>
+			date(createTime)&gt;=#{beginDate} and date(createTime)&lt;=#{endDate}
+		order by
+			createTime desc
+	</select>
+	
+	<select id="selectTestById" resultType="Test">
+		select
+			*
+		from
+			tests
+		where
+			id = #{id}
+	</select>
+</mapper>

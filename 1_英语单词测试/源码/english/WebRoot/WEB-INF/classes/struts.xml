@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="words" extends="struts-default" namespace="/words">
+		<action name="toAddWord" class="com.carre.action.WordAction" method="toAddWord">
+			<result name="toAddWord">/WEB-INF/pages/addWord.jsp</result>
+		</action>
+		<action name="addWord" class="com.carre.action.WordAction" method="addWord">
+			<result name="addWord">/WEB-INF/pages/addWord.jsp</result>
+		</action>
+		<action name="wordsTest" class="com.carre.action.WordAction" method="wordsTest">
+			<result name="wordsTest">/WEB-INF/pages/wordsTest.jsp</result>
+		</action>
+		<action name="searchWords" class="com.carre.action.WordAction" method="searchWords" />
+		<!-- 校验英文单词是否已存在 -->
+		<action name="findByWordEnglish" class="com.carre.action.WordAction" method="findByWordEnglish" />
+	</package>
+	
+	<package name="tests" extends="struts-default" namespace="/tests">
+		<!-- 显示测试记录页 -->
+		<action name="toTestShown" class="com.carre.action.TestAction" method="toTestShown">
+			<result name="toTestShown">/WEB-INF/pages/testShown.jsp</result>
+		</action>
+		<!-- ajax获取测试记录 -->
+		<action name="findTestsByPage" class="com.carre.action.TestAction" method="findTestsByPage" />
+		<!-- 提交测试题 -->
+		<action name="testSubmit" class="com.carre.action.TestAction" method="testSubmit">
+			<result name="testSubmit">/WEB-INF/pages/testShown.jsp</result>
+		</action>
+		<!-- 显示单条测试记录的详情 -->
+		<action name="toTestDetail" class="com.carre.action.TestAction" method="toTestDetail">
+			<result name="toTestDetail">/WEB-INF/pages/toTestDetail.jsp</result>
+		</action>
+		<action name="findSingleTestByPage" class="com.carre.action.TestAction" method="findSingleTestByPage" />
+	</package>
+</struts>    
