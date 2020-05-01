@@ -3,10 +3,10 @@ package com.carre.service.proxy;
 import java.util.Date;
 import java.util.List;
 
-import com.carre.action.WordEnglishExistException;
 import com.carre.entity.Word;
 import com.carre.exception.DataAccessException;
 import com.carre.exception.ServiceException;
+import com.carre.exception.WordEnglishExistException;
 import com.carre.factory.ObjectFactory;
 import com.carre.service.WordService;
 import com.carre.transaction.TransactionManager;

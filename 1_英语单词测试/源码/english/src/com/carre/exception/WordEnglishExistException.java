@@ -1,4 +1,4 @@
-package com.carre.action;
+package com.carre.exception;
 
 public class WordEnglishExistException extends Exception {
 

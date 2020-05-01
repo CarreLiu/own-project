@@ -15,12 +15,12 @@
 
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrapValidator.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mycss.css" type="text/css"></link>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap/js/bootstrapValidator.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="${pageContext.request.contextPath}/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico">
 	
 	<script type="text/javascript">
 	  let list = new Array();
@@ -114,7 +114,10 @@
         		        result += '</div>';
         		        for (let i = 0; i < wordList.length; i++) {
         		        	result += '<div class="form-group">';
-            		        result += '<label class="col-sm-2 col-sm-offset-4" for="word-' + i + '">' + (i+1) + '.' + wordList[i].chinese + '</label>';
+            		        result += '<label class="col-sm-2 col-sm-offset-4" for="word-' + i + '">' + (i+1) + '. ';
+            		        if (wordList[i].property != null)
+            		        	result += wordList[i].property + ' ';
+            		        result += wordList[i].chinese + '</label>';
             		        result += '<div class="col-sm-3">';
             		        result += '<input class="form-control" type="text" id="word-' + i + '" name="words[' + i + '].answer" />';
             		        result += '<input type="hidden" value="' + wordList[i].id + '" name="words[' + i + '].id" />';

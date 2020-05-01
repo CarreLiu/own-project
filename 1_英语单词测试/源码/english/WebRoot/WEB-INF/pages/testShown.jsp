@@ -14,7 +14,6 @@
 
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrapValidator.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mycss.css" type="text/css"></link>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-table.css" />
@@ -22,6 +21,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap/js/bootstrapValidator.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="${pageContext.request.contextPath}/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico">
 	
 	<script type="text/javascript">
 	
@@ -130,7 +130,7 @@
 						field : 'correctRate',
 						align : 'center',
 						formatter : function(value, row, index) {
-							return value * 100 + '%';
+							return (value * 100).toFixed(1) + '%';
 						}
 					},
 					{
@@ -313,12 +313,8 @@
     <div class="container text-center" style="margin-top: 20px;">
       <form class="form-inline" id="frmSearchTests" action="/action" method="post">
         <div class="form-group">
-        	<div class="checkbox">
-        		<label style="font-size: 1.2em; font-weight: bold;">
-        			全部时间
-        			<input class="form-control" type="checkbox" checked="checked" style="margin-right: 25px;" name="allTime" id="allTime" />
-        		</label>
-        	</div>
+        	<label style="font-size: 1.2em; font-weight: bold;">全部时间</label>
+        	<input class="form-control" type="checkbox" checked="checked" style="margin-right: 25px;" name="allTime" id="allTime" />
         </div>
         <div class="form-group">
           <label style="font-size: 1.2em; margin-right: 10px;">开始时间:</label>

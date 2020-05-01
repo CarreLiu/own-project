@@ -3,8 +3,8 @@ package com.carre.service;
 import java.util.Date;
 import java.util.List;
 
-import com.carre.action.WordEnglishExistException;
 import com.carre.entity.Word;
+import com.carre.exception.WordEnglishExistException;
 import com.carre.vo.WordVO;
 
 public interface WordService {

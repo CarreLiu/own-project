@@ -3,9 +3,9 @@ package com.carre.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import com.carre.action.WordEnglishExistException;
 import com.carre.dao.WordDao;
 import com.carre.entity.Word;
+import com.carre.exception.WordEnglishExistException;
 import com.carre.factory.ObjectFactory;
 import com.carre.service.WordService;
 import com.carre.vo.WordVO;

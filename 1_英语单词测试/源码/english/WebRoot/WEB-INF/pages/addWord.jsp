@@ -10,12 +10,11 @@
     <meta name="description" content="添加单词页面">
     <meta name="author" content="CarreLiu">
 
-    <title>添加新单词</title>
+    <title>添加单词</title>
 
     <!-- Bootstrap core CSS -->
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrapValidator.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mycss.css" type="text/css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap/js/bootstrapValidator.min.js"></script>
@@ -23,6 +22,7 @@
     <link href="${pageContext.request.contextPath}/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="${pageContext.request.contextPath}/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico">
     
     <script type="text/javascript">
 	    $(function() {
@@ -58,6 +58,13 @@
 	                            message: '中文释义不能为空'
 	                        }
 	                    }
+	                },
+	                "word.property": {
+	                	validators: {
+	                		notEmpty: {
+	                			message: '词性不能为空'
+	                		}
+	                	}
 	                }
 	            }
 	        });
@@ -69,27 +76,33 @@
   <body>
 	<% request.setAttribute("index", 0); %>
 	<jsp:include page="top.jsp"/>
-    <div class="container" style="margin-top: 150px;">
+    <div class="container" style="margin-top: 100px;">
         <form class="form-horizontal" id="frmAddWord"
         	action="${pageContext.request.contextPath}/words/addWord.action"
         	method="post">
             <div class="form-group">
-            	<div class="h2 col-sm-offset-4" style="margin-bottom: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添&nbsp;加&nbsp;新&nbsp;单&nbsp;词</div>
+            	<div class="h2 col-sm-offset-4 col-xs-offset-1" style="margin-bottom: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添&nbsp;加&nbsp;新&nbsp;单&nbsp;词</div>
             </div>
             <div class="form-group form-group-lg">
                 <label class="sr-only">英文</label>
-                <div class="col-sm-3 col-sm-offset-4">
+                <div class="col-sm-3 col-sm-offset-4 col-xs-10 col-xs-offset-1">
                     <input class="form-control" type="text" id="english" placeholder="English" name="word.english" />
                 </div>
             </div>
             <div class="form-group form-group-lg">
                 <label class="sr-only">中文释义</label>
-                <div class="col-sm-3 col-sm-offset-4">
+                <div class="col-sm-3 col-sm-offset-4 col-xs-10 col-xs-offset-1">
                     <input class="form-control" type="text" id="chinese" placeholder="中文释义" name="word.chinese" />
                 </div>
             </div>
+            <div class="form-group form-group-lg">
+                <label class="sr-only">词性</label>
+                <div class="col-sm-3 col-sm-offset-4 col-xs-10 col-xs-offset-1">
+                    <input class="form-control" type="text" id="property" placeholder="词性" name="word.property" />
+                </div>
+            </div>
             <div class="form-group">
-                <div class="col-sm-3 col-sm-offset-4">
+                <div class="col-sm-3 col-sm-offset-4 col-xs-10 col-xs-offset-1">
                     <input type="submit" class="btn btn-primary btn-block" value="添加" />
                 </div>
             </div>

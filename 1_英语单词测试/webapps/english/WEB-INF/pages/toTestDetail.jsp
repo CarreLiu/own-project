@@ -15,13 +15,13 @@
     <title>测试记录</title>
 
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mycss.css" type="text/css"></link>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrap-table.css" />
 	<script type="text/javascript" src="${pageContext.request.contextPath}/bootstrap/js/bootstrap-table.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="${pageContext.request.contextPath}/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico">
 	
 	<script type="text/javascript">
 	
@@ -56,6 +56,11 @@
 					{
 						title : '中文释义',
 						field : 'chinese',
+						align : 'left'
+					},
+					{
+						title : '词性',
+						field : 'property',
 						align : 'center'
 					}
 				]
@@ -97,7 +102,7 @@
     			<label class="col-sm-2">测试号:&nbsp;${test.id}</label>
     			<label class="col-sm-2">测试时间:&nbsp;<fmt:formatDate value="${test.createTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></label>
     			<label class="col-sm-2">总题数:&nbsp;${test.totalWords}</label>
-    			<label class="col-sm-2">正确率:&nbsp;${test.correctRate*100}%</label>
+    			<label class="col-sm-2">正确率:&nbsp;<fmt:formatNumber type="number" value="${test.correctRate*100}" pattern="#.0"/>%</label>
     			<label class="col-sm-2">题目来源:&nbsp;
     				<c:choose>
     					<c:when test="${test.testType == 0}">全部题目</c:when>

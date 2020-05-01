@@ -4,9 +4,9 @@
 	<insert id="insertWord" parameterType="Word">
 		insert into
 			words
-				(english, chinese, createTime)
+				(english, chinese, property, createTime)
 		values
-			(#{english}, #{chinese}, #{createTime})
+			(#{english}, #{chinese}, #{property}, #{createTime})
 	</insert>
 	
 	<select id="selectAllWords" resultType="Word">
