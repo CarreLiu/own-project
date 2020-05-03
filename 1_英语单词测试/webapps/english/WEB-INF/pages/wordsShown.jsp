@@ -150,6 +150,20 @@
 						align : 'center'
 					},
 					{
+						title : '音',
+						field : 'english',
+						align : 'center',
+						formatter : function(value, row, index) {
+							let id = row.id;
+							let english = value;
+							let result = '';
+							result += '<span id="voiceBtn-' + id + '" onclick="playVoice(' + id + ',&quot;' + english + '&quot;)" ';
+							result += 'class="glyphicon glyphicon-volume-down" aria-hidden="true" style="cursor: pointer;">';
+							result += '<audio id="mp3Btn-' + id + '" onended="playEnd(' + id + ')"></audio></span>';
+							return result;
+						}
+					},
+					{
 						title : '中文释义',
 						field : 'chinese',
 						align : 'left'
@@ -343,6 +357,8 @@
            		$('#modifyBtn').prop('disabled', true);
            	}
         });
+        
+        
       });
       
       function modifyWord(id) {
@@ -362,6 +378,32 @@
     	    	frmModifyWordValidator();
     	  }, 'json');
       }
+      	
+      //开始播放
+      function playVoice(id, english) {
+      	let audio = $('#mp3Btn-'+id)[0];
+		event.stopPropagation();	//防止冒泡
+		if(audio.paused) {	//如果当前是暂停状态
+			audio.src = 'http://dict.youdao.com/dictvoice?audio=' + english + '&type=1"';	//type=1为英式,2为美式
+			let playPromise = audio.play();	//播放
+			if (playPromise != undefined) {
+				playPromise.then(function() {
+					$('#voiceBtn-'+id).removeClass('glyphicon-volume-down');
+					$('#voiceBtn-'+id).addClass('glyphicon-volume-up');
+				}).catch(function(error) {
+					alert('无网络');
+				});
+			}
+			
+		}
+      }
+      
+      //播放完毕
+      function playEnd(id) {
+      	$('#voiceBtn-'+id).removeClass('glyphicon-volume-up');
+      	$('#voiceBtn-'+id).addClass('glyphicon-volume-down');
+      }
+		
 	    //时间戳格式化处理
 	  	function dateFormat(date, format) {
 	  		date = new Date(date);
