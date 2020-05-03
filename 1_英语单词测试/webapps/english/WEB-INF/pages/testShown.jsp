@@ -7,10 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="单词测试页面">
+    <meta name="description" content="测试记录页面">
     <meta name="author" content="CarreLiu">
 
-    <title>测试记录</title>
+    <title>英语单词测试</title>
 
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrapValidator.min.css" type="text/css">
@@ -134,16 +134,16 @@
 						}
 					},
 					{
-						title : '题目类型',
+						title : '题目来源',
 						field : 'testType',
 						align : 'center',
 						formatter : function(value, row, index) {
 							if (value == 0)
-								return "全部题目";
+								return "词库单词";
 							else if (value == 1)
-								return "错误题目";
+								return "测试错误单词";
 							else if (value == 2)
-								return "正确题目";
+								return "测试正确单词";
 							else
 								return "类型错误";
 						}
@@ -330,12 +330,12 @@
             <option value="">--请选择--</option>
             <option selected="selected" value="-1">全部记录</option>
             <option value="0">词库单词</option>
-            <option value="1">错误单词</option>
-            <option value="2">正确单词</option>
+            <option value="1">测试错误单词</option>
+            <option value="2">测试正确单词</option>
           </select>
         </div>
         <div class="form-group">
-          <input class="btn btn-success btn-block" id="searchBtn" type="button" value="查询单词" />
+          <input class="btn btn-success btn-block" id="searchBtn" type="button" value="查询记录" />
         </div>
       </form>
     </div>

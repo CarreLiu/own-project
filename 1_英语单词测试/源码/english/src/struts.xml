@@ -14,6 +14,15 @@
 		<action name="searchWords" class="com.carre.action.WordAction" method="searchWords" />
 		<!-- 校验英文单词是否已存在 -->
 		<action name="findByWordEnglish" class="com.carre.action.WordAction" method="findByWordEnglish" />
+		<!-- 显示词库单词 -->
+		<action name="toWordsShown" class="com.carre.action.WordAction" method="toWordsShown">
+			<result name="toWordsShown">/WEB-INF/pages/wordsShown.jsp</result>
+		</action>
+		<action name="findWordsByPage" class="com.carre.action.WordAction" method="findWordsByPage"></action>
+		<action name="findWordById" class="com.carre.action.WordAction" method="findWordById"></action>
+		<!-- 校验英文单词是否已存在,但不包括原单词 -->
+		<action name="findByWordEnglish2" class="com.carre.action.WordAction" method="findByWordEnglish2"></action>
+		<action name="modifyWord" class="com.carre.action.WordAction" method="modifyWord"></action>
 	</package>
 	
 	<package name="tests" extends="struts-default" namespace="/tests">

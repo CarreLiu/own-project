@@ -24,7 +24,9 @@ import com.carre.exception.WordEnglishExistException;
 import com.carre.factory.ObjectFactory;
 import com.carre.service.TestService;
 import com.carre.service.WordService;
+import com.carre.vo.PageInfo;
 import com.carre.vo.TestVO2;
+import com.github.pagehelper.PageHelper;
 
 public class WordAction {
 	private Word word;
@@ -66,7 +68,7 @@ public class WordAction {
 		TestService testProxy = (TestService) ObjectFactory.getObject("testProxy");
 		List<Word> wordList = null;
 		if (testType == 0) {	//词库中的单词
-			wordList = wordProxy.findAllWords(beginDate, endDate);
+			wordList = wordProxy.findWordsByDate(beginDate, endDate);
 		}
 		else if (testType == 1) {	//测试中的错误单词
 			TestVO2 test = new TestVO2(-1, beginDate, endDate);	//-1是指检索所有测试记录
@@ -146,4 +148,103 @@ public class WordAction {
 		response.getWriter().print(JSON.toJSON(map));
 	}
 	
+	public String toWordsShown() {
+		
+		return "toWordsShown";
+	}
+	
+	public void findWordsByPage() throws ParseException, IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		WordService wordProxy = (WordService) ObjectFactory.getObject("wordProxy");
+		String pageNoStr = request.getParameter("pageNo");
+		String pageSizeStr = request.getParameter("pageSize");
+		int pageNo = 0;
+		int pageSize = 0;
+		if (pageNoStr == null) {
+			pageNo = Constant.PAGE_NO;
+		}
+		else {
+			pageNo = Integer.parseInt(pageNoStr);
+		}
+		if (pageSizeStr == null) {
+			pageSize = Constant.PAGE_SIZE;
+		}
+		else {
+			pageSize = Integer.parseInt(pageSizeStr);
+		}
+		int allTime = Integer.parseInt(request.getParameter("allTime"));
+		String beginDateStr = request.getParameter("beginDate");
+		String endDateStr = request.getParameter("endDate");
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date beginDate = null;
+		Date endDate = null;
+		if (beginDateStr != "")
+			beginDate = simpleDateFormat.parse(beginDateStr);
+		if (endDateStr != "")
+			endDate = simpleDateFormat.parse(endDateStr);
+		List<Word> wordList = null;
+		if (allTime == 1) {	//查询全部时间
+			PageHelper.startPage(pageNo, pageSize);
+			wordList = wordProxy.findAllWords();
+			
+		}
+		else if (allTime == 0) {	//查询给定时间区间
+			PageHelper.startPage(pageNo, pageSize);
+			wordList = wordProxy.findWordsByDate(beginDate, endDate);
+		}
+		PageInfo<Word> pageInfo = new PageInfo<Word>(wordList);
+		response.setContentType(Constant.CONTENT_TYPE);
+		response.getWriter().print(JSON.toJSON(pageInfo));
+	}
+	
+	public void findWordById() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType(Constant.CONTENT_TYPE);
+		WordService wordProxy = (WordService) ObjectFactory.getObject("wordProxy");
+		Integer id = Integer.valueOf(request.getParameter("id"));
+		Word modifyWord = wordProxy.findWordById(id);
+		response.getWriter().print(JSON.toJSON(modifyWord));
+	}
+	
+	//校验英文单词是否已存在,但不包括原单词
+	public void findByWordEnglish2() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType(Constant.CONTENT_TYPE);
+		String english = request.getParameter("english");
+		String primeEnglish = request.getParameter("primeEnglish");
+		WordService wordProxy = (WordService) ObjectFactory.getObject("wordProxy");
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (english.equals(primeEnglish) || english.trim().equals(primeEnglish)) {
+			map.put("valid", true);
+		}
+		else {
+			try {
+				wordProxy.findByWordEnglish(english);
+				map.put("valid", true);//设置valid属性,在false时,输出message所对应的值
+			} catch (WordEnglishExistException e) {
+				map.put("valid", false);
+				map.put("message", e.getMessage());
+			}
+		}
+		//返回2个值:message,是否输出该消息:valid
+		response.getWriter().print(JSON.toJSON(map));
+	}
+	
+	public void modifyWord() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType(Constant.CONTENT_TYPE);
+		Integer id = Integer.valueOf(request.getParameter("id"));
+		String english = request.getParameter("english");
+		String chinese = request.getParameter("chinese");
+		String property = request.getParameter("property");
+		Word modifyWord = new Word(id, english, chinese, property, null, null, null);
+		
+		WordService wordProxy = (WordService) ObjectFactory.getObject("wordProxy");
+		wordProxy.modifyWord(modifyWord);
+	}
 }

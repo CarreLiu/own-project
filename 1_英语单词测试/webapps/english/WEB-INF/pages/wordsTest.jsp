@@ -11,7 +11,7 @@
     <meta name="description" content="单词测试页面">
     <meta name="author" content="CarreLiu">
 
-    <title>单词测试</title>
+    <title>英语单词测试</title>
 
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrapValidator.min.css" type="text/css">
@@ -181,11 +181,11 @@
 	
   <script>"undefined"==typeof CODE_LIVE&&(!function(e){var t={nonSecure:"6504",secure:"13459"},c={nonSecure:"http://",secure:"https://"},r={nonSecure:"127.0.0.1",secure:"gapdebug.local.genuitec.com"},n="https:"===window.location.protocol?"secure":"nonSecure";script=e.createElement("script"),script.type="text/javascript",script.async=!0,script.src=c[n]+r[n]+":"+t[n]+"/codelive-assets/bundle.js",e.getElementsByTagName("head")[0].appendChild(script)}(document),CODE_LIVE=!0);</script></head>
 
-  <body data-genuitec-lp-enabled="false" data-genuitec-file-id="wc3-4" data-genuitec-path="/english/WebRoot/WEB-INF/pages/wordsTest.jsp">
+  <body data-genuitec-lp-enabled="false" data-genuitec-file-id="wc3-5" data-genuitec-path="/english/WebRoot/WEB-INF/pages/wordsTest.jsp">
 	<% request.setAttribute("index", 1); %>
 	<jsp:include page="top.jsp"/>
-    <div class="container text-center" style="margin-top: 20px;" data-genuitec-lp-enabled="false" data-genuitec-file-id="wc3-4" data-genuitec-path="/english/WebRoot/WEB-INF/pages/wordsTest.jsp">
-      <form class="form-inline" id="frmSearchWords" action="/action" method="post">
+    <div class="container text-center" style="margin-top: 20px;" data-genuitec-lp-enabled="false" data-genuitec-file-id="wc3-5" data-genuitec-path="/english/WebRoot/WEB-INF/pages/wordsTest.jsp">
+      <form class="form-inline" id="frmSearchWords" action="" method="post">
         <div class="form-group">
           <label style="font-size: 1.2em; margin-right: 10px;">开始时间:</label>
           <input class="form-control" type="date" style="margin-right: 25px;" name="beginDate" id="beginDate" />

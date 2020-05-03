@@ -53,6 +53,13 @@
 				$(this).addClass('active');
 			}
 		});
+		
+		$(window).on('click scroll', function() {
+			if (window.screen.width < 768) {
+				console.log("1");
+				$('#navbar').collapse('hide');
+			}
+		});
 	});
 </script>
 <script>"undefined"==typeof CODE_LIVE&&(!function(e){var t={nonSecure:"6504",secure:"13459"},c={nonSecure:"http://",secure:"https://"},r={nonSecure:"127.0.0.1",secure:"gapdebug.local.genuitec.com"},n="https:"===window.location.protocol?"secure":"nonSecure";script=e.createElement("script"),script.type="text/javascript",script.async=!0,script.src=c[n]+r[n]+":"+t[n]+"/codelive-assets/bundle.js",e.getElementsByTagName("head")[0].appendChild(script)}(document),CODE_LIVE=!0);</script></head>
@@ -67,23 +74,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                  <a class="navbar-brand">英语单词测试</a>
+                  <a class="navbar-brand"><label id="timeId"></label></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav" style="font-size: 16px;">
                     <li class="active"><a href="${pageContext.request.contextPath}/words/toAddWord.action">添加单词</a></li>
                     <li><a href="${pageContext.request.contextPath}/words/wordsTest.action">单词测试</a></li>
                     <li><a href="${pageContext.request.contextPath}/tests/toTestShown.action">测试记录</a></li>
+                    <li><a href="${pageContext.request.contextPath}/words/toWordsShown.action">词库单词</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-2 col-sm-offset-10 col-xs-7 col-xs-offset-5">
-                <p id="timeId"></p>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

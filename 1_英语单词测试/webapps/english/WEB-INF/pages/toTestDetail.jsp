@@ -9,10 +9,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="单词测试页面">
+    <meta name="description" content="测试记录页面">
     <meta name="author" content="CarreLiu">
 
-    <title>测试记录</title>
+    <title>英语单词测试</title>
 
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
@@ -105,9 +105,9 @@
     			<label class="col-sm-2">正确率:&nbsp;<fmt:formatNumber type="number" value="${test.correctRate*100}" pattern="#.0"/>%</label>
     			<label class="col-sm-2">题目来源:&nbsp;
     				<c:choose>
-    					<c:when test="${test.testType == 0}">全部题目</c:when>
-    					<c:when test="${test.testType == 1}">错误题目</c:when>
-    					<c:when test="${test.testType == 2}">正确题目</c:when>
+    					<c:when test="${test.testType == 0}">词库单词</c:when>
+    					<c:when test="${test.testType == 1}">测试错误单词</c:when>
+    					<c:when test="${test.testType == 2}">测试正确单词</c:when>
     					<c:otherwise>类型错误</c:otherwise>
     				</c:choose>
     			</label>

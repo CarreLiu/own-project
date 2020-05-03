@@ -9,7 +9,7 @@
 			(#{english}, #{chinese}, #{property}, #{createTime})
 	</insert>
 	
-	<select id="selectAllWords" resultType="Word">
+	<select id="selectWordsByDate" resultType="Word">
 		select
 			*
 		from
@@ -17,7 +17,7 @@
 		where
 			date(createTime)&gt;=#{0} and date(createTime)&lt;=#{1}
 		order by
-			id
+			id desc
 	</select>
 	
 	<update id="updateErrorWords" parameterType="java.util.List">
@@ -67,5 +67,32 @@
 			words
 		where
 			english = #{english}
+	</select>
+	
+	<select id="selectAllWords" resultType="Word">
+		select
+			*
+		from
+			words
+		order by
+			id desc
+	</select>
+	
+	<select id="selectWordById" resultType="Word">
+		select
+			*
+		from
+			words
+		where
+			id = #{id}
+	</select>
+	
+	<select id="updateWord" parameterType="Word">
+		update
+			words
+		set
+			english = #{english}, chinese = #{chinese}, property = #{property}
+		where
+			id = #{id}
 	</select>
 </mapper>

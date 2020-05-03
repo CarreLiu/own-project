@@ -11,7 +11,7 @@
     <meta name="description" content="单词测试页面">
     <meta name="author" content="CarreLiu">
 
-    <title>单词测试</title>
+    <title>英语单词测试</title>
 
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrapValidator.min.css" type="text/css">
@@ -185,7 +185,7 @@
 	<% request.setAttribute("index", 1); %>
 	<jsp:include page="top.jsp"/>
     <div class="container text-center" style="margin-top: 20px;">
-      <form class="form-inline" id="frmSearchWords" action="/action" method="post">
+      <form class="form-inline" id="frmSearchWords" action="" method="post">
         <div class="form-group">
           <label style="font-size: 1.2em; margin-right: 10px;">开始时间:</label>
           <input class="form-control" type="date" style="margin-right: 25px;" name="beginDate" id="beginDate" />

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50728
 File Encoding         : 65001
 
-Date: 2020-05-02 00:16:41
+Date: 2020-05-03 17:38:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -48,7 +48,7 @@ CREATE TABLE `words` (
   `errorTimes` int(10) NOT NULL DEFAULT '0',
   `correctTimes` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of words
@@ -74,17 +74,18 @@ INSERT INTO `words` VALUES ('18', 'function', '功能，作用；职务，职责
 INSERT INTO `words` VALUES ('19', 'fund', '资金，基金；储备，蕴藏；为---提供资金，资助', 'n.&v.', '2020-04-30 23:55:56', '0', '0');
 INSERT INTO `words` VALUES ('20', 'fundamental', '基础的，基本的；根本的，主要的，十分重大的；基本原则，基本原理', 'adj.&n.', '2020-04-30 23:56:43', '0', '0');
 INSERT INTO `words` VALUES ('21', 'anguish', '(精神的或肉体的)极度痛苦，苦恼；使痛苦，苦恼，悲痛；感到苦恼或(极度)悲痛', 'n.&v.', '2020-04-30 23:58:03', '0', '0');
-INSERT INTO `words` VALUES ('22', 'annoy', '使恼怒，使生气；打扰，骚扰', 'vt.', '2020-05-01 00:19:37', '1', '0');
-INSERT INTO `words` VALUES ('23', 'annual', '每年的，年度的，一年一次的；全年的；年报，年刊；一年生植物', 'adj.&n.', '2020-05-01 00:20:40', '0', '1');
-INSERT INTO `words` VALUES ('24', 'monopoly', '垄断，专卖；独占，专利；垄断者(企业)，专利者', 'n.', '2020-05-01 00:22:43', '1', '0');
-INSERT INTO `words` VALUES ('25', 'monotonous', '单调无聊的，毫无变化的', 'adj.', '2020-05-01 00:23:07', '1', '0');
-INSERT INTO `words` VALUES ('26', 'mood', '心境，情绪，心情；氛围，气氛；语气', 'n.', '2020-05-01 00:23:34', '1', '0');
-INSERT INTO `words` VALUES ('27', 'transmission', '播送，发射，传送，传染，传播', 'n.', '2020-05-01 00:24:52', '0', '1');
-INSERT INTO `words` VALUES ('28', 'transmit', '传送，传递；播送，发射；传染，传播', 'v.', '2020-05-01 00:25:28', '1', '0');
-INSERT INTO `words` VALUES ('29', 'transplant', '移植(器官等)；移种(植物等)；(使)移居，(使)迁移；(器官等的)移植；移植的器官，移植物', 'v.&n.', '2020-05-01 00:27:29', '1', '0');
-INSERT INTO `words` VALUES ('30', 'transport', '运送，运输，搬动；运输，运送；运输系统，运载工具', 'vt.&n.', '2020-05-01 00:28:06', '1', '0');
-INSERT INTO `words` VALUES ('31', 'stride', '阔步前进，大踏步走；大步，跨步，阔步；(快速的)进展，发展，进步', 'v.&n.', '2020-05-01 00:28:55', '1', '0');
-INSERT INTO `words` VALUES ('32', 'strike', '打击，撞，撞击；突然袭击，进攻；给---以(深刻)印象，突然想到；罢工；偶然发现；打，击；罢工；意外威力，走运', 'v.&n.', '2020-05-01 00:41:21', '1', '0');
-INSERT INTO `words` VALUES ('33', 'striking', '显著的，突出的，妩媚动人的，标致的', 'adj.', '2020-05-01 00:42:25', '1', '0');
-INSERT INTO `words` VALUES ('34', 'string', '细绳，线，带；(一)串，一连串，一系列；串起；缚，扎，挂', 'n.&v.', '2020-05-01 00:44:52', '1', '0');
-INSERT INTO `words` VALUES ('35', 'structure', '结构体，(尤指建筑物)；结构，构造；精心组织，周密安排，体系；系统安排，精心组织，使形成体系', 'n.', '2020-05-01 01:23:37', '1', '0');
+INSERT INTO `words` VALUES ('22', 'annoy', '使恼怒，使生气；打扰，骚扰', 'vt.', '2020-05-01 00:19:37', '0', '0');
+INSERT INTO `words` VALUES ('23', 'annual', '每年的，年度的，一年一次的；全年的；年报，年刊；一年生植物', 'adj.&n.', '2020-05-01 00:20:40', '0', '0');
+INSERT INTO `words` VALUES ('24', 'monopoly', '垄断，专卖；独占，专利；垄断者(企业)，专利者', 'n.', '2020-05-01 00:22:43', '0', '0');
+INSERT INTO `words` VALUES ('25', 'monotonous', '单调无聊的，毫无变化的', 'adj.', '2020-05-01 00:23:07', '0', '0');
+INSERT INTO `words` VALUES ('26', 'mood', '心境，情绪，心情；氛围，气氛；语气', 'n.', '2020-05-01 00:23:34', '0', '0');
+INSERT INTO `words` VALUES ('27', 'transmission', '播送，发射，传送，传染，传播', 'n.', '2020-05-01 00:24:52', '0', '0');
+INSERT INTO `words` VALUES ('28', 'transmit', '传送，传递；播送，发射；传染，传播', 'v.', '2020-05-01 00:25:28', '0', '0');
+INSERT INTO `words` VALUES ('29', 'transplant', '移植(器官等)；移种(植物等)；(使)移居，(使)迁移；(器官等的)移植；移植的器官，移植物', 'v.&n.', '2020-05-01 00:27:29', '0', '0');
+INSERT INTO `words` VALUES ('30', 'transport', '运送，运输，搬动；运输，运送；运输系统，运载工具', 'vt.&n.', '2020-05-01 00:28:06', '0', '0');
+INSERT INTO `words` VALUES ('31', 'stride', '阔步前进，大踏步走；大步，跨步，阔步；(快速的)进展，发展，进步', 'v.&n.', '2020-05-01 00:28:55', '0', '0');
+INSERT INTO `words` VALUES ('32', 'strike', '打击，撞，撞击；突然袭击，进攻；给---以(深刻)印象，突然想到；罢工；偶然发现；打，击；罢工；意外威力，走运', 'v.&n.', '2020-05-01 00:41:21', '0', '0');
+INSERT INTO `words` VALUES ('33', 'striking', '显著的，突出的，妩媚动人的，标致的', 'adj.', '2020-05-01 00:42:25', '0', '0');
+INSERT INTO `words` VALUES ('34', 'string', '细绳，线，带；(一)串，一连串，一系列；串起；缚，扎，挂', 'n.&v.', '2020-05-01 00:44:52', '0', '0');
+INSERT INTO `words` VALUES ('35', 'structure', '结构体，(尤指建筑物)；结构，构造；精心组织，周密安排，体系；系统安排，精心组织，使形成体系', 'n.', '2020-05-01 01:23:37', '0', '0');
+INSERT INTO `words` VALUES ('36', 'stun', '使震惊，使晕倒，把---打晕；给(某人)以深刻印象，使深深感动；晕眩，打晕，惊倒', 'v.&n.', '2020-05-02 00:23:42', '0', '0');

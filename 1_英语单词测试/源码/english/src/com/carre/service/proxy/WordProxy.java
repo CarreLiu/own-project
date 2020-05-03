@@ -29,13 +29,13 @@ public class WordProxy implements WordService {
 	}
 
 	@Override
-	public List<Word> findAllWords(Date beginDate, Date endDate) {
+	public List<Word> findWordsByDate(Date beginDate, Date endDate) {
 		TransactionManager tran = (TransactionManager) ObjectFactory.getObject("transaction");
 		WordService wordService = (WordService) ObjectFactory.getObject("wordService");
 		List<Word> wordList = null;
 		try {
 			tran.beginTransaction();
-			wordList = wordService.findAllWords(beginDate, endDate);
+			wordList = wordService.findWordsByDate(beginDate, endDate);
 			tran.commit();
 		} catch (DataAccessException e) {
 			tran.rollback();
@@ -104,6 +104,54 @@ public class WordProxy implements WordService {
 		}
 		
 		return word;
+	}
+
+	@Override
+	public List<Word> findAllWords() {
+		TransactionManager tran = (TransactionManager) ObjectFactory.getObject("transaction");
+		WordService wordService = (WordService) ObjectFactory.getObject("wordService");
+		List<Word> wordList = null;
+		try {
+			tran.beginTransaction();
+			wordList = wordService.findAllWords();
+			tran.commit();
+		} catch (DataAccessException e) {
+			tran.rollback();
+			throw new ServiceException(e);
+		}
+		
+		return wordList;
+	}
+
+	@Override
+	public Word findWordById(Integer id) {
+		TransactionManager tran = (TransactionManager) ObjectFactory.getObject("transaction");
+		WordService wordService = (WordService) ObjectFactory.getObject("wordService");
+		Word word = null;
+		try {
+			tran.beginTransaction();
+			word = wordService.findWordById(id);
+			tran.commit();
+		} catch (DataAccessException e) {
+			tran.rollback();
+			throw new ServiceException(e);
+		}
+		
+		return word;
+	}
+
+	@Override
+	public void modifyWord(Word word) throws Exception {
+		TransactionManager tran = (TransactionManager) ObjectFactory.getObject("transaction");
+		WordService wordService = (WordService) ObjectFactory.getObject("wordService");
+		try {
+			tran.beginTransaction();
+			wordService.modifyWord(word);
+			tran.commit();
+		} catch (DataAccessException e) {
+			tran.rollback();
+			throw new ServiceException(e);
+		}
 	}
 
 }

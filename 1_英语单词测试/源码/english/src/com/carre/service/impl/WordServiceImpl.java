@@ -20,9 +20,9 @@ public class WordServiceImpl implements WordService {
 	}
 
 	@Override
-	public List<Word> findAllWords(Date beginDate, Date endDate) {
+	public List<Word> findWordsByDate(Date beginDate, Date endDate) {
 		WordDao wordDao = (WordDao) ObjectFactory.getObject("wordDao");
-		List<Word> wordList = wordDao.selectAllWords(beginDate, endDate);
+		List<Word> wordList = wordDao.selectWordsByDate(beginDate, endDate);
 		
 		return wordList;
 	}
@@ -55,6 +55,28 @@ public class WordServiceImpl implements WordService {
 			throw new WordEnglishExistException("英文单词(" + english + ")已存在");
 		}
 		return word;
+	}
+
+	@Override
+	public List<Word> findAllWords() {
+		WordDao wordDao = (WordDao) ObjectFactory.getObject("wordDao");
+		List<Word> wordList = wordDao.selectAllWords();
+		
+		return wordList;
+	}
+
+	@Override
+	public Word findWordById(Integer id) {
+		WordDao wordDao = (WordDao) ObjectFactory.getObject("wordDao");
+		Word word = wordDao.selectWordById(id);
+		
+		return word;
+	}
+
+	@Override
+	public void modifyWord(Word word) throws Exception {
+		WordDao wordDao = (WordDao) ObjectFactory.getObject("wordDao");
+		wordDao.updateWord(word);
 	}
 
 }

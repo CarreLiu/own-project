@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="测试记录页面">
+    <meta name="description" content="词库单词页面">
     <meta name="author" content="CarreLiu">
 
     <title>英语单词测试</title>
@@ -24,9 +24,9 @@
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico">
 	
 	<script type="text/javascript">
-	
-	  function frmSearchTestsValidator() {
-		$('#frmSearchTests').bootstrapValidator({
+		let flag = 0;	//判断是否修改了单词	
+	  function frmSearchWordsValidator() {
+		$('#frmSearchWords').bootstrapValidator({
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
                 invalid: 'glyphicon glyphicon-remove',
@@ -72,16 +72,53 @@
                             }
                         }              
                     }
-                },
-                testType: {
-                	validators: {
-                		notEmpty: {
-                			message: '请选择题目类型'
-                		}
-                	}
                 }
             }
         });
+	  }
+	  
+	  function frmModifyWordValidator() {
+		  $('#frmModifyWord').bootstrapValidator({
+		  	feedbackIcons: {
+	        	valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	        	english: {
+	        		validators: {
+	        			notEmpty: {
+	        				message: '英语单词不能为空'
+	        			},
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_-\s]+$/,
+                            message: '请输入合法的英文单词'
+                        },
+                        remote: {	//远程校验,此处修改了源码,改为了同步方式
+                        	type: 'post',
+                        	url: '${pageContext.request.contextPath}/words/findByWordEnglish2.action',
+                        	data: {
+                        		primeEnglish: $('#primeEnglish').val()
+                        	}
+                        }
+	        		}
+	        	},
+	        	chinese: {
+	        		validators: {
+	        			notEmpty: {
+	        				message: '中文释义不能为空'
+	        			}
+	        		}
+	        	},
+	        	property: {
+	        		validators: {
+	        			notEmpty: {
+	        				message: '词性不能为空'
+	        			}
+	        		}
+	        	}
+	        }
+		  });
 	  }
 	  
 	  	function initTable() {
@@ -91,7 +128,7 @@
 			$("#cusTable").bootstrapTable({
 				method : 'post',
 				contentType : "application/x-www-form-urlencoded", //post请求必须要有！
-				url : "${pageContext.request.contextPath}/tests/findTestsByPage.action", //要请求数据的文件路径
+				url : "${pageContext.request.contextPath}/words/findWordsByPage.action", //要请求数据的文件路径
 				striped : true, //是否显示行间隔色
 				pageNumber : 1, //初始化加载第一页，默认第一页
 				pagination : true, //是否分页
@@ -108,12 +145,22 @@
 				undefinedText : "空", //当数据为 undefined 时显示的字符  
 				columns : [
 					{
-						title : '测试号',
-						field : 'id',
+						title : 'English',
+						field : 'english',
 						align : 'center'
 					},
 					{
-						title : '测试时间',
+						title : '中文释义',
+						field : 'chinese',
+						align : 'left'
+					},
+					{
+						title : '词性',
+						field : 'property',
+						align : 'center'
+					},
+					{
+						title : '添加时间',
 						field : 'createTime',
 						align : 'center',
 						formatter : function(value, row, index) {
@@ -121,32 +168,14 @@
 						}
 					},
 					{
-						title : '总题数',
-						field : 'totalWords',
+						title : '错误次数',
+						field : 'errorTimes',
 						align : 'center'
 					},
 					{
-						title : '正确率',
-						field : 'correctRate',
-						align : 'center',
-						formatter : function(value, row, index) {
-							return (value * 100).toFixed(1) + '%';
-						}
-					},
-					{
-						title : '题目来源',
-						field : 'testType',
-						align : 'center',
-						formatter : function(value, row, index) {
-							if (value == 0)
-								return "词库单词";
-							else if (value == 1)
-								return "测试错误单词";
-							else if (value == 2)
-								return "测试正确单词";
-							else
-								return "类型错误";
-						}
+						title : '正确次数',
+						field : 'correctTimes',
+						align : 'center'
 					},
 					{
 						title : '操作',
@@ -162,7 +191,7 @@
 		function actionFormatter(value, row, index) {
 			let id = value;
 			let result = "";
-			result += "<a class='btn btn-success btn-xs' onclick='viewDetail(" + id + ")'>查看详情</a>&nbsp;&nbsp;&nbsp;";
+			result += "<a class='btn btn-success btn-xs' onclick='modifyWord(" + id + ")'>修改</a>";
 			return result;
 		}
 		
@@ -174,16 +203,16 @@
 			}
 			let beginDate = $('#beginDate').val();
     		let endDate = $('#endDate').val();
-    		let testType = $('#testType').val();
+    		let pageNo = (params.offset / params.limit) + 1;
+    		$('#pageNo').val(pageNo);
 			return {
 				//页码  
-				pageNo : (params.offset / params.limit) + 1,
+				pageNo : pageNo,
 				//页面大小
 				pageSize : params.limit,
 				allTime : allTime,
 				beginDate : beginDate,
-				endDate : endDate,
-				testType : testType
+				endDate : endDate
 			}
 	    }
 	  
@@ -191,19 +220,19 @@
     	//ajax生成bootstrap表格
   		initTable();  
     	  
-    	frmSearchTestsValidator();
-        $('#frmSearchTests').on('change', function() {
+    	frmSearchWordsValidator();
+        $('#frmSearchWords').on('change', function() {
         	//全部时间选项
         	if ($('#allTime').is(':checked') == true) {
-				$('#frmSearchTests').bootstrapValidator('removeField', 'beginDate');
-				$('#frmSearchTests').bootstrapValidator('removeField', 'endDate');
+				$('#frmSearchWords').bootstrapValidator('removeField', 'beginDate');
+				$('#frmSearchWords').bootstrapValidator('removeField', 'endDate');
 				$('#beginDate').prop('disabled', true);
 				$('#endDate').prop('disabled', true);
         	}
         	else {
         		$('#beginDate').prop('disabled', false);
         		$('#endDate').prop('disabled', false);
-        		$('#frmSearchTests').bootstrapValidator('addField', 'beginDate',{
+        		$('#frmSearchWords').bootstrapValidator('addField', 'beginDate',{
         			validators: {
                         notEmpty: {
                             message: '开始时间不能为空'
@@ -223,7 +252,7 @@
                         }
                     }
 		        });
-        		$('#frmSearchTests').bootstrapValidator('addField', 'endDate',{
+        		$('#frmSearchWords').bootstrapValidator('addField', 'endDate',{
         			validators: {
                         notEmpty: {
                             message: '结束时间不能为空'
@@ -244,7 +273,7 @@
                     }
         		});
         	}
-        	let validator = $('#frmSearchTests').data("bootstrapValidator");	//获取validator对象
+        	let validator = $('#frmSearchWords').data("bootstrapValidator");	//获取validator对象
         	validator.validate();	//手动触发验证
         	if (validator.isValid()) {	//通过验证
         		$('#searchBtn').prop('disabled', false);
@@ -255,25 +284,83 @@
         });
         
         $('#searchBtn').on('click', function() {
-        	let validator = $('#frmSearchTests').data("bootstrapValidator");
+        	let validator = $('#frmSearchWords').data("bootstrapValidator");
         	validator.validate();
         	if (validator.isValid()) {
         		//ajax生成bootstrap表格
         		initTable();
         		
-        		$('#frmSearchTests').data('bootstrapValidator').destroy();
-        		$('#frmSearchTests').data('bootstrapValidator', null);
-        		frmSearchTestsValidator();
+        		$('#frmSearchWords').data('bootstrapValidator').destroy();
+        		$('#frmSearchWords').data('bootstrapValidator', null);
+        		frmSearchWordsValidator();
         	}
         	else {
         		$('#searchBtn').prop('disabled', true);
         	}
         });
 		
+        $('#frmModifyWord').on('input propertychange', function() {
+        	let validator = $('#frmModifyWord').data("bootstrapValidator");	//获取validator对象
+        	validator.validate();	//手动触发验证
+           	if (validator.isValid()) {	//通过验证
+           		$('#modifyBtn').prop('disabled', false);
+           	}
+           	else {
+           		$('#modifyBtn').prop('disabled', true);
+           	}        		
+        });
+        
+        $('#resetBtn').on('click', function() {
+        	setTimeout(function() {	//否则会先执行下面的事件,再清空form表单
+        		$('#frmModifyWord').data('bootstrapValidator').destroy();
+        		$('#frmModifyWord').data('bootstrapValidator', null);
+        		frmModifyWordValidator();
+        		let validator = $('#frmModifyWord').data("bootstrapValidator");
+            	validator.validate();
+				$('#modifyBtn').prop('disabled', true);            	
+        	}, 10);
+        });
+        
+        $('#modifyBtn').on('click', function() {
+        	let validator = $('#frmModifyWord').data("bootstrapValidator");
+        	validator.validate();
+       		if (validator.isValid()) {
+           		let id = $('#id').val();
+           		let english = $('#english').val();
+           		let chinese = $('#chinese').val();
+           		let property = $('#property').val();
+           		//ajax同步方式提交数据
+   				$.ajaxSettings.async = false;
+           		$.post('${pageContext.request.contextPath}/words/modifyWord.action',
+           			{'id':id,'english':english,'chinese':chinese,'property':property},
+           			function(data) {
+           				
+           			}, 'json');
+           		$('#modifyWord').modal('hide');
+           		$('#cusTable').bootstrapTable('refresh');
+           	}
+           	else {
+           		$('#modifyBtn').prop('disabled', true);
+           	}
+        });
       });
       
-      function viewDetail(id) {
-    	  window.location = "${pageContext.request.contextPath}/tests/toTestDetail.action?id="+id;
+      function modifyWord(id) {
+    	  $('#modifyBtn').prop('disabled', false);
+    	  frmModifyWordValidator();	//防止destroy不能被调用
+    	  $('#frmModifyWord').data('bootstrapValidator').destroy();
+  		  $('#frmModifyWord').data('bootstrapValidator', null);
+    	  $.post('${pageContext.request.contextPath}/words/findWordById.action',
+    		{'id':id},
+    		function(word) {
+    			$('#id').val(word.id);
+    			$('#primeEnglish').val(word.english);
+    			$('#english').val(word.english);
+    			$('#chinese').val(word.chinese);
+    			$('#property').val(word.property);
+    	    	$('#modifyWord').modal('show');
+    	    	frmModifyWordValidator();
+    	  }, 'json');
       }
 	    //时间戳格式化处理
 	  	function dateFormat(date, format) {
@@ -308,10 +395,11 @@
   </head>
 
   <body>
-	<% request.setAttribute("index", 2); %>
+	<% request.setAttribute("index", 3); %>
 	<jsp:include page="top.jsp"/>
     <div class="container text-center" style="margin-top: 20px;">
-      <form class="form-inline" id="frmSearchTests" action="/action" method="post">
+      <form class="form-inline" id="frmSearchWords" action="/action" method="post">
+      	<input type="hidden" value="" id="pageNo">
         <div class="form-group">
         	<label style="font-size: 1.2em; font-weight: bold;">全部时间</label>
         	<input class="form-control" type="checkbox" checked="checked" style="margin-right: 25px;" name="allTime" id="allTime" />
@@ -325,17 +413,7 @@
           <input class="form-control" type="date" disabled="disabled" style="margin-right: 25px;" name="endDate" id="endDate" />
         </div>
         <div class="form-group">
-          <label style="font-size: 1.2em; margin-right: 10px;">记录类型:</label>
-          <select class="form-control" style="margin-right: 25px;" name="testType" id="testType">
-            <option value="">--请选择--</option>
-            <option selected="selected" value="-1">全部记录</option>
-            <option value="0">词库单词</option>
-            <option value="1">测试错误单词</option>
-            <option value="2">测试正确单词</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <input class="btn btn-success btn-block" id="searchBtn" type="button" value="查询记录" />
+          <input class="btn btn-success btn-block" id="searchBtn" type="button" value="查询单词" />
         </div>
       </form>
     </div>
@@ -345,6 +423,53 @@
       
       </table>
     </div>
+    
+    <!-- 修改单词模态框begin -->
+	<div class="modal fade" id="modifyWord" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">修改单词</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<form id="frmModifyWord" class="form-horizontal" method="post" action="">
+	      		<input type="hidden" id="id">
+	      		<input type="hidden" id="primeEnglish">
+	      		<div class="form-group">
+	      			<label class="col-sm-3 col-sm-offset-1 col-xs-4 control-label text-right">English:</label>
+	      			<div class="col-sm-5 col-xs-6">
+	      				<input class="form-control" type="text" id="english" name="english">
+	      			</div>
+	      		</div>
+	      		<div class="form-group">
+	      			<label class="col-sm-3 col-sm-offset-1 col-xs-4 control-label text-right">中文释义:</label>
+	      			<div class="col-sm-5 col-xs-6">
+	      				<input class="form-control" type="text" id="chinese" name="chinese">
+	      			</div>
+	      		</div>
+	      		<div class="form-group">
+	      			<label class="col-sm-3 col-sm-offset-1 col-xs-4 control-label text-right">词性:</label>
+	      			<div class="col-sm-5 col-xs-6">
+	      				<input class="form-control" type="text" id="property" name="property">
+	      			</div>
+	      		</div>
+	      		<div class="form-group">
+			       <div class="col-sm-6  col-sm-offset-3 col-xs-8 col-xs-offset-2">
+			       	 <div class="col-sm-6 col-xs-6">
+				         <button type="reset" id="resetBtn" class="btn btn-primary btn-block">重&nbsp;&nbsp;置</button>
+			       	 </div>
+			       	 <div class="col-sm-6 col-xs-6">
+				         <button type="button" id="modifyBtn" class="btn btn-primary btn-block">修&nbsp;&nbsp;改</button>
+			       	 </div>
+			       </div>
+			    </div>
+	      	</form>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+    <!-- 修改单词模态框end -->
 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
