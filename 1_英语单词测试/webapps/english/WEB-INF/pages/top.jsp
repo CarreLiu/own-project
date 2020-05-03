@@ -41,6 +41,9 @@
 	}
 	
 	$(function() {
+		console.log("Author: CarreLiu");
+		console.log("E-mail: CarreLiu@hotmail.com");
+		console.log("QQ: 1079302494");
 		showTime();
 		setInterval(showTime,1000);
 		
@@ -56,7 +59,6 @@
 		
 		$(window).on('click scroll', function() {
 			if (window.screen.width < 768) {
-				console.log("1");
 				$('#navbar').collapse('hide');
 			}
 		});
