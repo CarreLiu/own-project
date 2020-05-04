@@ -4,9 +4,9 @@
 	<insert id="insertWord" parameterType="Word">
 		insert into
 			words
-				(english, chinese, property, createTime)
+				(english, chinese, createTime)
 		values
-			(#{english}, #{chinese}, #{property}, #{createTime})
+			(#{english}, #{chinese}, #{createTime})
 	</insert>
 	
 	<select id="selectWordsByDate" resultType="Word">
@@ -91,7 +91,7 @@
 		update
 			words
 		set
-			english = #{english}, chinese = #{chinese}, property = #{property}
+			english = #{english}, chinese = #{chinese}
 		where
 			id = #{id}
 	</select>

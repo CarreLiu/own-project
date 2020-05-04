@@ -109,13 +109,6 @@
 	        				message: '中文释义不能为空'
 	        			}
 	        		}
-	        	},
-	        	property: {
-	        		validators: {
-	        			notEmpty: {
-	        				message: '词性不能为空'
-	        			}
-	        		}
 	        	}
 	        }
 		  });
@@ -167,11 +160,6 @@
 						title : '中文释义',
 						field : 'chinese',
 						align : 'left'
-					},
-					{
-						title : '词性',
-						field : 'property',
-						align : 'center'
 					},
 					{
 						title : '添加时间',
@@ -342,14 +330,10 @@
            		let id = $('#id').val();
            		let english = $('#english').val();
            		let chinese = $('#chinese').val();
-           		let property = $('#property').val();
            		//ajax同步方式提交数据
    				$.ajaxSettings.async = false;
            		$.post('${pageContext.request.contextPath}/words/modifyWord.action',
-           			{'id':id,'english':english,'chinese':chinese,'property':property},
-           			function(data) {
-           				
-           			}, 'json');
+           			{'id':id,'english':english,'chinese':chinese}, 'json');
            		$('#modifyWord').modal('hide');
            		$('#cusTable').bootstrapTable('refresh');
            	}
@@ -373,10 +357,29 @@
     			$('#primeEnglish').val(word.english);
     			$('#english').val(word.english);
     			$('#chinese').val(word.chinese);
-    			$('#property').val(word.property);
     	    	$('#modifyWord').modal('show');
     	    	frmModifyWordValidator();
     	  }, 'json');
+    	  
+    	  	$('#requestChinese').on('click', function() {
+	    		let english = $('#english').val();
+	    		if (english != "" && english != null) {
+	    			//ajax同步方式提交数据
+	   				$.ajaxSettings.async = false;
+	    			$.post('${pageContext.request.contextPath}/allwords/findChinese.action',
+	    	    			{'english': english},
+	    	    			function(data) {
+	    	    				if (data != "null")
+	    	    					$('#chinese').val(data);
+	    	    			}, 'text');
+	    			$('#frmModifyWord').data('bootstrapValidator').destroy();
+	        		$('#frmModifyWord').data('bootstrapValidator', null);
+	        		frmModifyWordValidator();
+	        		let validator = $('#frmModifyWord').data("bootstrapValidator");
+	            	validator.validate();
+	            	$('#modifyBtn').prop('disabled', false);
+	    		}
+	    	});
       }
       	
       //开始播放
@@ -491,21 +494,20 @@
 	      			</div>
 	      		</div>
 	      		<div class="form-group">
-	      			<label class="col-sm-3 col-sm-offset-1 col-xs-4 control-label text-right">词性:</label>
-	      			<div class="col-sm-5 col-xs-6">
-	      				<input class="form-control" type="text" id="property" name="property">
-	      			</div>
-	      		</div>
-	      		<div class="form-group">
-			       <div class="col-sm-6  col-sm-offset-3 col-xs-8 col-xs-offset-2">
+			       <div class="col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
 			       	 <div class="col-sm-6 col-xs-6">
 				         <button type="reset" id="resetBtn" class="btn btn-primary btn-block">重&nbsp;&nbsp;置</button>
 			       	 </div>
 			       	 <div class="col-sm-6 col-xs-6">
-				         <button type="button" id="modifyBtn" class="btn btn-primary btn-block">修&nbsp;&nbsp;改</button>
+			       	 	 <input type="button" id="requestChinese" class="btn btn-primary btn-block" value="获取中文">
 			       	 </div>
 			       </div>
 			    </div>
+			    <div class="form-group">
+	      			<div class="col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+	      				<button type="button" id="modifyBtn" class="btn btn-primary btn-block">确&nbsp;&nbsp;认&nbsp;&nbsp;修&nbsp;&nbsp;改</button>
+	      			</div>
+	      		</div>
 	      	</form>
 	      </div>
 	    </div><!-- /.modal-content -->

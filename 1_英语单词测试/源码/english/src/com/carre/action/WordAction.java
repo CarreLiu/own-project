@@ -241,8 +241,7 @@ public class WordAction {
 		Integer id = Integer.valueOf(request.getParameter("id"));
 		String english = request.getParameter("english");
 		String chinese = request.getParameter("chinese");
-		String property = request.getParameter("property");
-		Word modifyWord = new Word(id, english, chinese, property, null, null, null);
+		Word modifyWord = new Word(id, english, chinese, null, null, null);
 		
 		WordService wordProxy = (WordService) ObjectFactory.getObject("wordProxy");
 		wordProxy.modifyWord(modifyWord);

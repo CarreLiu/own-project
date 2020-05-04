@@ -110,15 +110,13 @@
         			function(wordList){
         				let result = '';
         				result += '<div class="form-group">';
-        		        result += '<div class="h2 col-sm-3 col-sm-offset-5">共' + wordList.length + '个单词</div>';
+        		        result += '<div class="h2 col-xs-6 col-xs-offset-3 col-sm-3 col-sm-offset-4 col-md-3 col-md-offset-5">共' + wordList.length + '个单词</div>';
         		        result += '</div>';
         		        for (let i = 0; i < wordList.length; i++) {
         		        	result += '<div class="form-group">';
-            		        result += '<label class="col-sm-2 col-sm-offset-4" for="word-' + i + '">' + (i+1) + '. ';
-            		        if (wordList[i].property != null)
-            		        	result += wordList[i].property + ' ';
+            		        result += '<label class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-3 col-md-offset-3" for="word-' + i + '">' + (i+1) + '. ';
             		        result += wordList[i].chinese + '</label>';
-            		        result += '<div class="col-sm-3">';
+            		        result += '<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-3 col-md-offset-0">';
             		        result += '<input class="form-control" type="text" id="word-' + i + '" name="words[' + i + '].answer" />';
             		        result += '<input type="hidden" value="' + wordList[i].id + '" name="words[' + i + '].id" />';
             		        result += '<input type="hidden" id="english-' + i + '" name="words[' + i + '].english" />';
@@ -132,7 +130,7 @@
 	        		        result += '</div>';
 	        		        
 	        		        result += '<div class="form-group">';
-	        		        result += '<div class="col-sm-2 col-sm-offset-5">';
+	        		        result += '<div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-2 col-md-offset-5">';
 	        		        result += '<input type="submit" class="btn btn-primary btn-block" value="提交答案" />';
 	        		        result += '</div>';
 	        		        result += '</div>';

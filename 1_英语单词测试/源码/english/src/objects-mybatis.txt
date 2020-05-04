@@ -4,6 +4,8 @@ wordProxy=com.carre.service.proxy.WordProxy
 wordService=com.carre.service.impl.WordServiceImpl
 testProxy=com.carre.service.proxy.TestProxy
 testService=com.carre.service.impl.TestServiceImpl
+allWordProxy=com.carre.service.proxy.AllWordProxy
+allWordService=com.carre.service.impl.AllWordServiceImpl
 
 
 ##

@@ -42,4 +42,9 @@
 		</action>
 		<action name="findSingleTestByPage" class="com.carre.action.TestAction" method="findSingleTestByPage" />
 	</package>
+	
+	<!-- 单词库 -->
+	<package name="allwords" extends="struts-default" namespace="/allwords">
+		<action name="findChinese" class="com.carre.action.AllWordAction" method="findChinese" />
+	</package>
 </struts>    

@@ -33,14 +33,8 @@
 	    		val = "0px";
 	    	$('#containers').css('marginTop', val);
 	    }
-    	$(function() {
-	    	setMarginTop();
-	    	window.addEventListener('orientationchange', setMarginTop);	//当屏幕旋转时触发
-	    	setTimeout(function() {
-				$('#english').focus();
-			}, 500);
-	    	
-			$('#frmAddWord').bootstrapValidator({
+	    function frmAddWordValidator() {
+		    $('#frmAddWord').bootstrapValidator({
 	            feedbackIcons: {
 	                valid: 'glyphicon glyphicon-ok',
 	                invalid: 'glyphicon glyphicon-remove',
@@ -68,16 +62,38 @@
 	                            message: '中文释义不能为空'
 	                        }
 	                    }
-	                },
-	                "word.property": {
-	                	validators: {
-	                		notEmpty: {
-	                			message: '词性不能为空'
-	                		}
-	                	}
 	                }
 	            }
 	        });
+	    }
+	    
+    	$(function() {
+	    	setMarginTop();
+	    	window.addEventListener('orientationchange', setMarginTop);	//当屏幕旋转时触发
+	    	setTimeout(function() {
+				$('#english').focus();
+			}, 500);
+	    	
+	    	frmAddWordValidator();
+			
+			$('#requestChinese').on('click', function() {
+	    		let english = $('#english').val();
+	    		if (english != "" && english != null) {
+	    			//ajax同步方式提交数据
+	   				$.ajaxSettings.async = false;
+	    			$.post('${pageContext.request.contextPath}/allwords/findChinese.action',
+	    	    			{'english': english},
+	    	    			function(data) {
+	    	    				if (data != "null")
+	    	    					$('#chinese').val(data);
+	    	    			}, 'text');
+	    			$('#frmAddWord').data('bootstrapValidator').destroy();
+	        		$('#frmAddWord').data('bootstrapValidator', null);
+	        		frmAddWordValidator();
+	        		let validator = $('#frmAddWord').data("bootstrapValidator");
+	            	validator.validate();
+	    		}
+	    	});
 	    });
     </script>
     
@@ -105,15 +121,12 @@
                     <input class="form-control" type="text" id="chinese" placeholder="中文释义" name="word.chinese" />
                 </div>
             </div>
-            <div class="form-group form-group-lg">
-                <label class="sr-only">词性</label>
-                <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
-                    <input class="form-control" type="text" id="property" placeholder="词性" name="word.property" />
-                </div>
-            </div>
             <div class="form-group">
-                <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
-                    <input type="submit" class="btn btn-primary btn-block" value="添加" />
+            	<div class="col-md-2 col-md-offset-4 col-xs-5 col-xs-offset-1 col-sm-3 col-sm-offset-3">
+            		<input id="requestChinese" type="button" class="btn btn-primary btn-block" value="获取中文" />
+            	</div>
+                <div class="col-md-2 col-xs-5 col-sm-3">
+                    <input id="addBtn" type="submit" class="btn btn-primary btn-block" value="添加" />
                 </div>
             </div>
         </form>

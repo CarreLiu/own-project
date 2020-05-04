@@ -61,6 +61,7 @@
 	<mappers>
 		<mapper resource="com/carre/mapper/WordMapper.xml"/>
 		<mapper resource="com/carre/mapper/TestMapper.xml"/>
+		<mapper resource="com/carre/mapper/AllWordMapper.xml"/>
 	</mappers>
 	
 </configuration>

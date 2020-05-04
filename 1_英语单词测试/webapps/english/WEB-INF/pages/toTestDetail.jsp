@@ -71,11 +71,6 @@
 						title : '中文释义',
 						field : 'chinese',
 						align : 'left'
-					},
-					{
-						title : '词性',
-						field : 'property',
-						align : 'center'
 					}
 				]
 			});

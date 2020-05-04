@@ -7,7 +7,6 @@ public class Word implements Serializable {
 	private Integer id;
 	private String english;
 	private String chinese;
-	private String property;
 	private Date createTime;
 	private Integer errorTimes;
 	private Integer correctTimes;
@@ -16,13 +15,12 @@ public class Word implements Serializable {
 		super();
 	}
 
-	public Word(Integer id, String english, String chinese, String property, Date createTime, Integer errorTimes,
+	public Word(Integer id, String english, String chinese, Date createTime, Integer errorTimes,
 			Integer correctTimes) {
 		super();
 		this.id = id;
 		this.english = english;
 		this.chinese = chinese;
-		this.property = property;
 		this.createTime = createTime;
 		this.errorTimes = errorTimes;
 		this.correctTimes = correctTimes;
@@ -45,14 +43,6 @@ public class Word implements Serializable {
 	}
 	public void setChinese(String chinese) {
 		this.chinese = chinese;
-	}
-	
-	public String getProperty() {
-		return property;
-	}
-
-	public void setProperty(String property) {
-		this.property = property;
 	}
 
 	public Date getCreateTime() {
@@ -80,7 +70,7 @@ public class Word implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Word [id=" + id + ", english=" + english + ", chinese=" + chinese + ", property=" + property
+		return "Word [id=" + id + ", english=" + english + ", chinese=" + chinese
 				+ ", createTime=" + createTime + ", errorTimes=" + errorTimes + ", correctTimes=" + correctTimes + "]";
 	}
 
