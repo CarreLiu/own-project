@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.UserDao">
+	<select id="selectByUsername" resultType="user">
+		select
+			*
+		from
+			user
+		where
+			username = #{username}
+	</select>
+	
+	<select id="selectUserByUsernamePass" parameterType="com.carre.vo.UserVO" resultType="user">
+		select
+			*
+		from
+			user
+		where
+			username = #{username} and password = #{password}
+	</select>
+	
+	<insert id="insertUser" parameterType="user">
+		insert into
+			user
+				(username, password, name, gender, email, universityId, info, registTime)
+		values
+			(#{username}, #{password}, #{name}, #{gender}, #{email}, #{universityId}, #{info}, #{registTime})
+		
+	</insert>
+</mapper>

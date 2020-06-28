@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.WordDao">
+	<insert id="insertWord" parameterType="word">
+		insert into
+			word
+				(userId, english, chinese, status, isFavorite, errorTimes, correctTimes, createTime)
+		values
+			(#{userId}, #{english}, #{chinese}, #{status}, #{isFavorite}, #{errorTimes}, #{correctTimes}, #{createTime})
+	</insert>
+	
+	<select id="selectEnabledWordsByDate" parameterType="com.carre.vo.WordVO2" resultType="word">
+		select
+			*
+		from
+			word
+		where
+			userId = #{userId}
+			and status = 1
+			and date(createTime) &gt;= #{beginDate}
+			and date(createTime) &lt;= #{endDate}
+		order by
+			createTime desc, id desc
+	</select>
+	
+	<select id="selectEnabledWordsByIds" parameterType="java.util.List" resultType="word">
+		select
+			*
+		from
+			word
+		where
+			id in
+			<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+			and status = 1
+		order by
+			createTime, id
+	</select>
+	
+	<select id="selectWordsByDate" parameterType="com.carre.vo.WordVO2" resultType="word">
+		select
+			*
+		from
+			word
+		where
+			userId = #{userId}
+			<if test="status != null">
+				and status = #{status}
+			</if>
+			and date(createTime) &gt;= #{beginDate}
+			and date(createTime) &lt;= #{endDate}
+		order by
+			createTime desc, id desc
+	</select>
+	
+	<update id="updateErrorWords" parameterType="java.util.List">
+		<foreach collection="list" item="error" index="index" open="" close="" separator=";">
+			update
+				word
+			<set>
+				errorTimes = errorTimes + 1
+			</set>
+			<where>
+				id = #{error.id}
+			</where>
+		</foreach>
+	</update>
+	
+	<update id="updateCorrectWords" parameterType="java.util.List">
+		<foreach collection="list" item="correct" index="index" open="" close="" separator=";">
+			update
+				word
+			<set>
+				correctTimes = correctTimes + 1
+			</set>
+			<where>
+				id = #{correct.id}
+			</where>
+		</foreach>
+	</update>
+	
+	<select id="selectWordsByIds" parameterType="java.util.List" resultType="word">
+		select
+			*
+		from
+			word
+		where
+			id in
+			<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+		order by
+			createTime, id
+	</select>
+	
+	<select id="selectByWordEnglish" resultType="word">
+		select
+			*
+		from
+			word
+		where
+			userId = #{0} and english = #{1}
+	</select>
+	
+	<select id="selectAllWords" parameterType="com.carre.vo.WordVO2" resultType="word">
+		select
+			*
+		from
+			word
+		where
+			userId = #{userId}
+			<if test="status != null">
+				and status = #{status}
+			</if>
+		order by
+			createTime desc, id desc
+	</select>
+	
+	<select id="selectWordById" resultType="word">
+		select
+			*
+		from
+			word
+		where
+			id = #{id}
+	</select>
+	
+	<update id="updateWord" parameterType="word">
+		update
+			word
+		set
+			english = #{english}, chinese = #{chinese}
+		where
+			id = #{id}
+	</update>
+	
+	<update id="updateWordCreateTime">
+		update
+			word
+		set
+			createTime = #{1}
+		where
+			id = #{0}
+	</update>
+	
+	<update id="updateWordStatus">
+		update
+			word
+		set
+			status = #{1}
+		where
+			id = #{0}
+	</update>
+	
+	<update id="updateWordFavoriteStatus">
+		update
+			word
+		set
+			isFavorite = #{1}
+		where
+			id = #{0}
+	</update>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.UniversityDao">
+	
+	<select id="selectUniversity" resultType="university">
+		select
+			*
+		from
+			university
+	</select>
+	
+	<insert id="insertUniversity" parameterType="university" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into
+			university
+				(name, number)
+		values
+			(#{name}, #{number})
+	</insert>
+	
+	<update id="updateUniversityNumber" parameterType="university">
+		update
+			university
+		set
+			number = number + 1
+		where
+			id = #{id}
+	</update>
+</mapper>

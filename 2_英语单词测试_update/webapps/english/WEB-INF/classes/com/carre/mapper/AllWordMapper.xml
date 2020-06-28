@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.AllWordDao">
+	<select id="selectChinese" resultType="String">
+		select
+			translation
+		from
+			allword
+		where
+			word = #{english}
+	</select>
+	
+	<select id="selectWordByCondition" resultType="word">
+		select
+			w.id "id", w.userId "userId", w.english "english", w.chinese "chinese", w.createTime "createTime", w.isFavorite "isFavorite", w.status "status"
+		from
+			word w
+		where
+			userId = #{userId}
+			<if test="english != '' and english != null">
+				and w.english like #{english}
+			</if>
+			<if test="chinese != '' and chinese != null">
+				and w.chinese like #{chinese}
+			</if>
+		union
+		select
+			a.id "id", null, a.word "english", a.translation "chinese", null, null, null
+		from
+			allword a
+		where a.word NOT IN 
+			(select
+				english
+			from
+				word
+			where userId = #{userId}
+			<if test="english != '' and english != null">
+				and english like #{english}
+			</if>
+			<if test="chinese != '' and chinese != null">
+				and chinese like #{chinese}
+			</if>
+			)
+			
+			<if test="english != '' and english != null">
+				and a.word like #{english}
+			</if>
+			<if test="chinese != '' and chinese != null">
+				and a.translation like #{chinese}
+			</if>
+		order by isFavorite desc, createTime desc, id
+	</select>
+</mapper>

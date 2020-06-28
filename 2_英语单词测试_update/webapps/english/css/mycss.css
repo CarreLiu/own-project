@@ -1,0 +1,9 @@
+[genuitec-file-id="wc1-13"],[genuitec-lp-path="/english/WebRoot/css/mycss.css"],[genuitec-lp-enabled=false]{
+  /* for codelive */
+}
+
+@media (min-width: 768px) {
+    .container{
+        max-width: 630px;
+    }
+}

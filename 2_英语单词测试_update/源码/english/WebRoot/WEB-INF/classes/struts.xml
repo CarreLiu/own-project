@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="user" extends="struts-default" namespace="/user">
+		<action name="toLogin" class="com.carre.action.UserAction" method="toLogin">
+			<result name="toLogin">/WEB-INF/pages/login.jsp</result>
+		</action>
+		<!-- 未登录非法访问自动跳转到登录页面 -->
+		<action name="notLogin" class="com.carre.action.UserAction" method="notLogin">
+			<result name="notLogin">/WEB-INF/pages/login.jsp</result>
+		</action>
+		<action name="login" class="com.carre.action.UserAction" method="login">
+			<result name="success" type="redirectAction">loginSuccess</result>
+			<result name="fail">/WEB-INF/pages/login.jsp</result>
+		</action>
+		<action name="loginSuccess" class="com.carre.action.UserAction" method="loginSuccess">
+			<result name="loginSuccess">/WEB-INF/pages/addWord.jsp</result>
+		</action>
+		<action name="findByUsername" class="com.carre.action.UserAction" method="findByUsername" />
+		<action name="regist" class="com.carre.action.UserAction" method="regist">
+			<result name="success" type="redirectAction">registSuccess</result>
+			<result name="fail">/WEB-INF/pages/login.jsp</result>
+		</action>
+		<action name="registSuccess" class="com.carre.action.UserAction" method="registSuccess">
+			<result name="registSuccess">/WEB-INF/pages/login.jsp</result>
+		</action>
+		<action name="logOut" class="com.carre.action.UserAction" method="logOut">
+			<result name="logOut">/WEB-INF/pages/login.jsp</result>
+		</action>
+	</package>
+	
+	<package name="word" extends="struts-default" namespace="/word">
+		<interceptors>
+			<interceptor name="loginInteceptor" class="com.carre.interceptor.LoginInterceptor" />
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInteceptor">
+					<param name="excludeMethods"></param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="loginStack" />
+		<global-results>
+			<result name="loginInterceptor" type="chain">
+				<param name="actionName">notLogin</param>
+				<param name="namespace">/user</param>
+				<param name="method">notLogin</param>
+			</result>
+		</global-results>
+	
+		<action name="toAddWord" class="com.carre.action.WordAction" method="toAddWord">
+			<result name="toAddWord">/WEB-INF/pages/addWord.jsp</result>
+		</action>
+		<action name="addWord" class="com.carre.action.WordAction" method="addWord">
+			<result name="success" type="redirectAction">addWordSuccess</result>
+			<result name="fail">/WEB-INF/pages/addWord.jsp</result>
+		</action>
+		<action name="addWordSuccess" class="com.carre.action.WordAction" method="addWordSuccess">
+			<result name="addWordSuccess">/WEB-INF/pages/addWord.jsp</result>
+		</action>
+		<action name="wordsTest" class="com.carre.action.WordAction" method="wordsTest">
+			<result name="wordsTest">/WEB-INF/pages/wordsTest.jsp</result>
+		</action>
+		<action name="searchEnabledWords" class="com.carre.action.WordAction" method="searchEnabledWords" />
+		<!-- 校验英文单词是否已存在 -->
+		<action name="findByWordEnglish" class="com.carre.action.WordAction" method="findByWordEnglish" />
+		<!-- 显示词库单词 -->
+		<action name="toWordsShown" class="com.carre.action.WordAction" method="toWordsShown">
+			<result name="toWordsShown">/WEB-INF/pages/wordsShown.jsp</result>
+		</action>
+		<action name="findWordsByPage" class="com.carre.action.WordAction" method="findWordsByPage"></action>
+		<action name="findWordById" class="com.carre.action.WordAction" method="findWordById"></action>
+		<!-- 校验英文单词是否已存在,但不包括原单词 -->
+		<action name="findByWordEnglish2" class="com.carre.action.WordAction" method="findByWordEnglish2"></action>
+		<action name="modifyWord" class="com.carre.action.WordAction" method="modifyWord"></action>
+		<!-- 更新单词在词库中的加入时间 -->
+		<action name="modifyWordCreateTime" class="com.carre.action.WordAction" method="modifyWordCreateTime"></action>
+		<!-- 更新单词的状态 -->
+		<action name="modifyWordStatus" class="com.carre.action.WordAction" method="modifyWordStatus"></action>
+		<!-- 更新单词收藏的状态 -->
+		<action name="modifyWordFavoriteStatus" class="com.carre.action.WordAction" method="modifyWordFavoriteStatus"></action>
+		<action name="addWordAjax" class="com.carre.action.WordAction" method="addWordAjax" />
+	</package>
+	
+	<package name="test" extends="struts-default" namespace="/test">
+		<interceptors>
+			<interceptor name="loginInteceptor" class="com.carre.interceptor.LoginInterceptor" />
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInteceptor">
+					<param name="excludeMethods"></param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="loginStack" />
+		<global-results>
+			<result name="loginInterceptor" type="chain">
+				<param name="actionName">notLogin</param>
+				<param name="namespace">/user</param>
+				<param name="method">notLogin</param>
+			</result>
+		</global-results>
+		
+		<!-- 显示测试记录页 -->
+		<action name="toTestShown" class="com.carre.action.TestAction" method="toTestShown">
+			<result name="toTestShown">/WEB-INF/pages/testShown.jsp</result>
+		</action>
+		<!-- ajax获取测试记录 -->
+		<action name="findTestsByPage" class="com.carre.action.TestAction" method="findTestsByPage" />
+		<!-- 提交测试题 -->
+		<action name="testSubmit" class="com.carre.action.TestAction" method="testSubmit">
+			<result name="success" type="redirectAction">testSubmitSuccess</result>
+			<result name="fail">/WEB-INF/pages/wordsTest.jsp</result>
+		</action>
+		<action name="testSubmitSuccess" class="com.carre.action.TestAction" method="testSubmitSuccess">
+			<result name="testSubmitSuccess">/WEB-INF/pages/testShown.jsp</result>
+		</action>
+		<!-- 显示单条测试记录的详情 -->
+		<action name="toTestDetail" class="com.carre.action.TestAction" method="toTestDetail">
+			<result name="toTestDetail">/WEB-INF/pages/testDetail.jsp</result>
+			<result name="fail">/WEB-INF/pages/testShown.jsp</result>
+		</action>
+		<action name="findSingleTestByPage" class="com.carre.action.TestAction" method="findSingleTestByPage" />
+	</package>
+	
+	<!-- 单词库 -->
+	<package name="allword" extends="struts-default" namespace="/allword">
+		<interceptors>
+			<interceptor name="loginInteceptor" class="com.carre.interceptor.LoginInterceptor" />
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInteceptor">
+					<param name="excludeMethods"></param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="loginStack" />
+		<global-results>
+			<result name="loginInterceptor" type="chain">
+				<param name="actionName">notLogin</param>
+				<param name="namespace">/user</param>
+				<param name="method">notLogin</param>
+			</result>
+		</global-results>
+		
+		<action name="findChinese" class="com.carre.action.AllWordAction" method="findChinese" />
+		<action name="toWordSearch" class="com.carre.action.AllWordAction" method="toWordSearch">
+			<result name="toWordSearch">/WEB-INF/pages/wordSearch.jsp</result>
+		</action>
+		<action name="findWordByCondition" class="com.carre.action.AllWordAction" method="findWordByCondition" />
+	</package>
+	
+	<package name="favorite" extends="struts-default" namespace="/favorite">
+		<interceptors>
+			<interceptor name="loginInteceptor" class="com.carre.interceptor.LoginInterceptor" />
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInteceptor">
+					<param name="excludeMethods"></param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="loginStack" />
+		<global-results>
+			<result name="loginInterceptor" type="chain">
+				<param name="actionName">notLogin</param>
+				<param name="namespace">/user</param>
+				<param name="method">notLogin</param>
+			</result>
+		</global-results>
+		
+		<action name="findFavoritesByPage" class="com.carre.action.FavoriteAction" method="findFavoritesByPage" />
+	</package>
+</struts>    

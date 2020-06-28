@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.TestDetailDao">
+	
+	<insert id="insertTestDetail" parameterType="testDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into
+			testdetail
+				(allWords, errorWords, correctWords)
+		values
+			(#{allWords}, #{errorWords}, #{correctWords})
+	</insert>
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.TestDao">
+	<sql id="testColumn">
+		t.id "testId",
+		t.userId "userId",
+		t.ownTestId "ownTestId",
+		t.totalWords "totalWords",
+		t.correctRate "correctRate",
+		t.createTime "createTime",
+		d.id "testDetailId",
+		d.allWords "allWords",
+		d.errorWords "errorWords",
+		d.correctWords "correctWords",
+		tt.id "testTypeId",
+		tt.name "name",
+		tt.info "info"
+	</sql>
+	
+	<resultMap type="test" id="testResultMap">
+		<id property="id" column="testId" />
+		<result property="userId" column="userId" />
+		<result property="ownTestId" column="ownTestId" />
+		<result property="totalWords" column="totalWords" />
+		<result property="correctRate" column="correctRate" />
+		<result property="testDetailId" column="testDetailId" />
+		<result property="testTypeId" column="testTypeId" />
+		<result property="createTime" column="createTime" />
+		
+		<association property="testDetail" javaType="testDetail">
+			<id property="id" column="testDetailId" />
+			<result property="allWords" column="allWords" />
+			<result property="errorWords" column="errorWords" />
+			<result property="correctWords" column="correctWords" />
+		</association>
+		
+		<association property="testType" javaType="testType">
+			<id property="id" column="testTypeId" />
+			<result property="name" column="name" />
+			<result property="info" column="info" />
+		</association>
+	</resultMap>
+
+	<insert id="insertTest" parameterType="Test">
+		insert into
+			test
+				(userId, ownTestId, totalWords, correctRate, testDetailId, testTypeId, createTime)
+		values
+			(#{userId}, #{ownTestId}, #{totalWords}, #{correctRate}, #{testDetailId}, #{testTypeId}, #{createTime})
+	</insert>
+	
+	<select id="selectAllTests" parameterType="com.carre.vo.TestVO" resultMap="testResultMap">
+		select
+			<include refid="testColumn" />
+		from
+			test t
+		left join
+			testdetail d
+		on
+			t.testDetailId = d.id
+		left join
+			testtype tt
+		on
+			t.testTypeId = tt.id
+		where
+			userId = #{userId}
+			<if test="testTypeId != 0">and testTypeId = #{testTypeId}</if>
+		order by
+			createTime desc
+	</select>
+	
+	<select id="selectTestsByDate" parameterType="com.carre.vo.TestVO" resultMap="testResultMap">
+		select
+			<include refid="testColumn" />
+		from
+			test t
+		left join
+			testdetail d
+		on
+			t.testDetailId = d.id
+		left join
+			testtype tt
+		on
+			t.testTypeId = tt.id
+		where
+			userId = #{userId}
+			<if test="testTypeId != 0">and testTypeId = #{testTypeId}</if>
+			and date(createTime)&gt;=#{beginDate} and date(createTime)&lt;=#{endDate}
+		order by
+			createTime desc
+	</select>
+	
+	<select id="selectTestById" resultMap="testResultMap">
+		select
+			<include refid="testColumn" />
+		from
+			test t
+		left join
+			testdetail d
+		on
+			t.testDetailId = d.id
+		left join
+			testtype tt
+		on
+			t.testTypeId = tt.id
+		where
+			t.id = #{id}
+	</select>
+	
+	<select id="selectMaxOwnTestId" resultType="java.lang.Integer">
+		select
+			max(ownTestId)
+		from
+			test
+		where
+			userId = #{userId}
+	</select>
+	
+</mapper>

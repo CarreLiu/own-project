@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carre.dao.FavoriteDao">
+	<sql id="favoriteColumn">
+		f.id "favoriteId",
+		f.userId "userId",
+		f.wordId "wordId",
+		f.joinTime "joinTime",
+		w.english "english",
+		w.chinese "chinese",
+		w.status "status",
+		w.isFavorite "isFavorite",
+		w.errorTimes "errorTimes",
+		w.correctTimes "correctTimes",
+		w.createTime "createTime"
+	</sql>
+	
+	<resultMap type="favorite" id="favoriteResultMap">
+		<id property="id" column="favoriteId" />
+		<result property="userId" column="userId" />
+		<result property="wordId" column="wordId" />
+		<result property="joinTime" column="joinTime" />
+		
+		<association property="word" javaType="word">
+			<id property="id" column="wordId" />
+			<result property="userId" column="userId" />
+			<result property="english" column="english" />
+			<result property="chinese" column="chinese" />
+			<result property="status" column="status" />
+			<result property="isFavorite" column="isFavorite" />
+			<result property="errorTimes" column="errorTimes" />
+			<result property="correctTimes" column="correctTimes" />
+			<result property="createTime" column="createTime" />
+		</association>
+		
+	</resultMap>
+	
+	<select id="selectEnabledFavoritesByDate" parameterType="com.carre.vo.FavoriteVO" resultMap="favoriteResultMap">
+		select
+			<include refid="favoriteColumn" />
+		from
+			favorite f
+		left join
+			word w
+		on
+			f.wordId = w.id
+		where
+			f.userId = #{userId}
+			and w.status = 1
+			and date(f.joinTime) &gt;= #{beginDate}
+			and date(f.joinTime) &lt;= #{endDate}
+		order by
+			f.joinTime desc, f.id desc
+	</select>
+	
+	<select id="selectAllFavorites" parameterType="com.carre.vo.FavoriteVO" resultMap="favoriteResultMap">
+		select
+			<include refid="favoriteColumn" />
+		from
+			favorite f
+		left join
+			word w
+		on
+			f.wordId = w.id
+		where
+			f.userId = #{userId}
+		order by
+			f.joinTime desc, f.id desc
+	</select>
+	
+	<select id="selectFavoritesByDate" parameterType="com.carre.vo.FavoriteVO" resultMap="favoriteResultMap">
+		select
+			<include refid="favoriteColumn" />
+		from
+			favorite f
+		left join
+			word w
+		on
+			f.wordId = w.id
+		where
+			f.userId = #{userId}
+			and date(f.joinTime) &gt;= #{beginDate}
+			and date(f.joinTime) &lt;= #{endDate}
+		order by
+			f.joinTime desc, f.id desc
+	</select>
+	
+	<insert id="insertFavorite" parameterType="favorite">
+		insert into
+			favorite
+				(userId, wordId, joinTime)
+		values
+			(#{userId}, #{wordId}, #{joinTime})
+	</insert>
+	
+	<delete id="deleteFavorite">
+		delete from
+			favorite
+		where
+			wordId = #{wordId}
+	</delete>
+	
+</mapper>
