@@ -2,6 +2,16 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
 	<package name="user" extends="struts-default" namespace="/user">
+		<interceptors>
+			<interceptor name="loginInteceptor" class="com.carre.interceptor.LoginInterceptor" />
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInteceptor">
+					<param name="excludeMethods"></param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+	
 		<action name="toLogin" class="com.carre.action.UserAction" method="toLogin">
 			<result name="toLogin">/WEB-INF/pages/login.jsp</result>
 		</action>
@@ -14,6 +24,8 @@
 			<result name="fail">/WEB-INF/pages/login.jsp</result>
 		</action>
 		<action name="loginSuccess" class="com.carre.action.UserAction" method="loginSuccess">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<result name="loginInterceptor" type="redirectAction">notLogin</result>
 			<result name="loginSuccess">/WEB-INF/pages/addWord.jsp</result>
 		</action>
 		<action name="findByUsername" class="com.carre.action.UserAction" method="findByUsername" />

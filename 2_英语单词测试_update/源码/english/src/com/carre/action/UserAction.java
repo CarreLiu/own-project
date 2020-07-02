@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.carre.constant.Constant;
 import com.carre.entity.University;
 import com.carre.entity.User;
+import com.carre.exception.InputEmptyException;
 import com.carre.exception.UserOrPassWrongException;
 import com.carre.exception.UsernameExistException;
 import com.carre.factory.ObjectFactory;
@@ -108,6 +109,11 @@ public class UserAction {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String name = request.getParameter("name");
+		String genderStr = request.getParameter("gender");
+		if (genderStr == null) {
+			request.setAttribute("registFailMsg", "请勿非法直接访问，注册失败！");
+			return "fail";
+		}
 		Integer gender = Integer.valueOf(request.getParameter("gender"));
 		String email = request.getParameter("email");
 		String info = request.getParameter("info");

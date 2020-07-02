@@ -34,46 +34,6 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields:{
-                beginDate: {
-                    validators: {
-                        notEmpty: {
-                            message: '开始时间不能为空'
-                        },
-                        callback: {
-                            message: '开始时间不能大于结束时间',
-                            callback: function(value, validator) {
-                                let other = validator.getFieldElements('endDate').val();
-                                if (other == '' || value == '')
-                                    return true;
-                                let start = new Date(value.replace(/-/g, '/'));
-                                let end = new Date(other.replace(/-/g, '/'));
-                                if (start <= end)
-                                    return true;
-                                return false;
-                            }
-                        }
-                    }
-                },
-                endDate: {
-                    validators: {
-                        notEmpty: {
-                            message: '结束时间不能为空'
-                        },
-                        callback: {
-                            message: '结束时间不能小于开始时间',
-                            callback: function(value, validator) {
-                                let other = validator.getFieldElements('beginDate').val();
-                                if (other == '' || value == '')
-                                    return true;
-                                let start = new Date(other.replace(/-/g, '/'));
-                                let end = new Date(value.replace(/-/g, '/'));
-                                if (start <= end)
-                                    return true;
-                                return false;
-                            }
-                        }              
-                    }
-                },
                 status: {
                 	validators: {
                 		notEmpty: {
@@ -387,50 +347,68 @@
         $('#frmSearchWords').on('change', function() {
         	//全部时间选项
         	if ($('#allTime').is(':checked') == true) {
-				$('#frmSearchWords').bootstrapValidator('removeField', 'beginDate');
-				$('#frmSearchWords').bootstrapValidator('removeField', 'endDate');
-				$('#beginDate').prop('disabled', true);
-				$('#endDate').prop('disabled', true);
+				$('#beginDate').attr('disabled', true);
+				$('#endDate').attr('disabled', true);
         	}
         	else {
-        		$('#beginDate').prop('disabled', false);
-        		$('#endDate').prop('disabled', false);
+        		$('#beginDate').removeAttr('disabled');
+        		$('#endDate').removeAttr('disabled');
         		$('#frmSearchWords').bootstrapValidator('addField', 'beginDate',{
-        			validators: {
+        			verbose: false,
+                    validators: {
                         notEmpty: {
                             message: '开始时间不能为空'
+                        },
+                        date: {
+                        	message: '日期非法'
                         },
                         callback: {
                             message: '开始时间不能大于结束时间',
                             callback: function(value, validator) {
+                            	let start = new Date(value.replace(/-/g, '/'));
+                            	if (start > Date.now()) {
+                                	validator.updateMessage('beginDate', 'callback', '时间不能大于今天');
+                                	return false;
+                                }
                                 let other = validator.getFieldElements('endDate').val();
-                                if (other == '' || value == '')
+                                if (other == '')
                                     return true;
-                                let start = new Date(value.replace(/-/g, '/'));
                                 let end = new Date(other.replace(/-/g, '/'));
-                                if (start <= end)
-                                    return true;
-                                return false;
+                                if (start > end) {
+                                	validator.updateMessage('beginDate', 'callback', '开始时间不能大于结束时间');
+                                    return false;
+                                }
+                                return true;
                             }
                         }
                     }
 		        });
         		$('#frmSearchWords').bootstrapValidator('addField', 'endDate',{
-        			validators: {
+        			verbose: false,
+                    validators: {
                         notEmpty: {
                             message: '结束时间不能为空'
+                        },
+                        date: {
+                        	message: '日期非法'
                         },
                         callback: {
                             message: '结束时间不能小于开始时间',
                             callback: function(value, validator) {
+                            	let end = new Date(value.replace(/-/g, '/'));
+                                if (end > Date.now()) {
+                                	validator.updateMessage('endDate', 'callback', '时间不能大于今天');
+                                	return false;
+                                }
                                 let other = validator.getFieldElements('beginDate').val();
-                                if (other == '' || value == '')
+                                if (other == '')
                                     return true;
                                 let start = new Date(other.replace(/-/g, '/'));
-                                let end = new Date(value.replace(/-/g, '/'));
-                                if (start <= end)
-                                    return true;
-                                return false;
+                                if (start > end) {
+                                	validator.updateMessage('endDate', 'callback', '结束时间不能小于开始时间');
+                                    return false;
+                                }
+                                return true;
                             }
                         }              
                     }
@@ -439,10 +417,10 @@
         	let validator = $('#frmSearchWords').data("bootstrapValidator");	//获取validator对象
         	validator.validate();	//手动触发验证
         	if (validator.isValid()) {	//通过验证
-        		$('#searchBtn').prop('disabled', false);
+        		$('#searchBtn').removeAttr('disabled');
         	}
         	else {
-        		$('#searchBtn').prop('disabled', true);
+        		$('#searchBtn').attr('disabled', true);
         	}
         });
         
@@ -465,7 +443,7 @@
         		frmSearchWordsValidator();
         	}
         	else {
-        		$('#searchBtn').prop('disabled', true);
+        		$('#searchBtn').attr('disabled', true);
         	}
         });
 		
@@ -473,10 +451,10 @@
         	let validator = $('#frmModifyWord').data("bootstrapValidator");	//获取validator对象
         	validator.validate();	//手动触发验证
            	if (validator.isValid()) {	//通过验证
-           		$('#modifyBtn').prop('disabled', false);
+           		$('#modifyBtn').removeAttr('disabled');
            	}
            	else {
-           		$('#modifyBtn').prop('disabled', true);
+           		$('#modifyBtn').attr('disabled', true);
            	}        		
         });
         
@@ -496,7 +474,7 @@
         		frmModifyWordValidator();
         		let validator = $('#frmModifyWord').data("bootstrapValidator");
             	validator.validate();
-            	$('#modifyBtn').prop('disabled', false);
+            	$('#modifyBtn').removeAttr('disabled');
     		}
     	});
         
@@ -530,7 +508,7 @@
            		$('#cusTable').bootstrapTable('refresh');
            	}
            	else {
-           		$('#modifyBtn').prop('disabled', true);
+           		$('#modifyBtn').attr('disabled', true);
            	}
         });
         
@@ -538,7 +516,7 @@
       });
       
       function modifyWord(id) {
-    	  $('#modifyBtn').prop('disabled', false);
+    	  $('#modifyBtn').removeAttr('disabled');
     	  frmModifyWordValidator();	//防止destroy不能被调用
     	  $('#frmModifyWord').data('bootstrapValidator').destroy();
   		  $('#frmModifyWord').data('bootstrapValidator', null);

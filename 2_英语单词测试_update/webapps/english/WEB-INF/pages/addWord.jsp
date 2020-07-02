@@ -124,6 +124,12 @@
 			}, 500);
 	    	
 	    	frmAddWordValidator();
+	    	
+	    	$('#english').on('input propertychange', function() {
+	    		if ($.trim($('#english').val()) == '') {
+	    			$('#chinese').val('');
+	    		}
+	    	});
 			
 			$('#requestChinese').on('click', function() {
 	    		let english = $('#english').val();
