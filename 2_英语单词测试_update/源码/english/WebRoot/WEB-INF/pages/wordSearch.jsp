@@ -436,7 +436,14 @@
     
     <div class="container" style="margin-top: 50px;">
       <table id="cusTable">
-      	
+      	<!--使用设置每一列的宽度-->
+		<colgroup>
+			<col style="width:15%;">
+			<col style="width:5%;">
+			<col style="width:45%;">
+			<col style="width:15%;">
+			<col style="width:20%;">
+		</colgroup>
       </table>
     </div>
     
